@@ -1,0 +1,66 @@
+{
+  "info": {
+    "name": "MentorLink API Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/health"
+      }
+    },
+    {
+      "name": "Create Student",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/students",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"Ananya\", \"email\": \"ananya@edu.in\", \"department\": \"CSE\", \"year\": 2, \"interests\": [\"AI\", \"NLP\"], \"goals\": \"Learn ML\"}"
+        }
+      }
+    },
+    {
+      "name": "Create Mentor",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/mentors",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"Vikram\", \"email\": \"vikram@edu.in\", \"department\": \"CSE\", \"expertise\": [\"AI\", \"NLP\"], \"bio\": \"Final year ML lead\", \"maxCapacity\": 2}"
+        }
+      }
+    },
+    {
+      "name": "Send Mentorship Request",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/requests",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"studentId\": \"stu_1\", \"mentorId\": \"men_1\", \"topic\": \"NLP project guidance\"}"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+name: MentorLink CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend-lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Backend Dependencies
+        working-directory: ./backend
+        run: npm install
+      - name: Lint Backend
+        working-directory: ./backend
+        run: npm run lint
+      - name: Run Jest Tests with Coverage
+        working-directory: ./backend
+        run: npm test
+
+  ml-service-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Python Dependencies
+        working-directory: ./ml-service
+        run: pip install fastapi pydantic numpy scikit-learn pytest pytest-cov httpx
+      - name: Run PyTest with Coverage (>=80%)
+        working-directory: ./ml-service
+        run: pytest --cov=. --cov-fail-under=80
+
+  docker-build:
+    needs: [backend-lint-and-test, ml-service-test]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker Images
+        run: docker compose build
